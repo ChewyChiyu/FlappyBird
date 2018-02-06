@@ -23,13 +23,19 @@ public class GamePanel extends JPanel{
 
 	final int SPACER;
 	final int MAX_OBSTACLES = 6;
-	
+
+	final int GRAVITY = 1;
+	final int MAX_GRAVITY = 12;
+
 	Thread gameLoop;
 	Runnable gameEngine;
 	boolean isRunning;
 
 	boolean initialClick;
-	
+	boolean releasedSpace = true;
+
+	Bird flappy;
+
 	public GamePanel(Dimension dim){
 		gameDim = dim;
 		SPACER = (int) (gameDim.width * .75);
@@ -38,11 +44,11 @@ public class GamePanel extends JPanel{
 		start();
 	}
 	synchronized void start(){
+		initialVars();
 		gameEngine = () -> gameLoop();
 		gameLoop = new Thread(gameEngine);
 		isRunning = true;
 		gameLoop.start();
-		initialVars();
 	}
 
 	void initialVars(){
@@ -62,6 +68,9 @@ public class GamePanel extends JPanel{
 		//add ground
 		sprites.add(new Ground(0,(int)(gameDim.getHeight()*.85)));
 		sprites.add(new Ground(gameDim.width,(int)(gameDim.getHeight()*.85)));
+		//add bird
+		flappy = new Bird((int)(gameDim.getWidth()/2),(int)(gameDim.getHeight()/2));
+		sprites.add(flappy);
 	}
 
 	void makeObstacle(int xBuffer){
@@ -133,27 +142,33 @@ public class GamePanel extends JPanel{
 	void manageObjects(){
 		for(int index = 0; index < sprites.size(); index++){
 			GameObject obj = sprites.get(index);
-
 			//updating hitboxes
 			obj.updateHitbox();
-			
 		}
 		//sort for ZMask
 		sortZMask();
+		if(initialClick){ //only gravity if firstClick
+			//gravity and angle change for bird
+			if(flappy.dy < MAX_GRAVITY){
+				flappy.dy += GRAVITY;
+			}
+			//moving bird
+			flappy.y += flappy.dy;
+		}
 	}
 
 	void sortZMask(){
 		Collections.sort(sprites, new Comparator<GameObject>() {
-		    @Override
-		    public int compare(GameObject lhs, GameObject rhs) {
-		        // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
-		        return lhs.z < rhs.z ? -1 : (lhs.z > rhs.z) ? 0 : 1;
-		    }
+			@Override
+			public int compare(GameObject lhs, GameObject rhs) {
+				// -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+				return lhs.z < rhs.z ? -1 : (lhs.z > rhs.z) ? 0 : 1;
+			}
 		});
 	}
-	
+
 	void manageBackground(){//if bg1X or bg2X is < Texture.background.getWidth() * Texture.BACKGROUND_SCALE / 2, += Texture.background.getWidth() * Texture.BACKGROUND_SCALE / 2
-	
+
 		bg1X--;
 		bg2X--;
 		if(bg1X < -Texture.background.getWidth() * Texture.BACKGROUND_SCALE/2 ){
@@ -168,8 +183,10 @@ public class GamePanel extends JPanel{
 			if((obj instanceof Pipe || obj instanceof Goal) && !initialClick){ //do not move obstacles if not initial click
 				continue;
 			}
-			obj.x-=1;
-			
+			if(!(obj instanceof Bird)){ //move everything except bird
+				obj.x-=1;
+			}
+
 			if(obj instanceof Goal){
 				if(obj.x < -(Texture.PIPE_SCALE * Texture.pipe.getWidth())/2){ //if past meaning pipe has already been removed pass threshhold
 					sprites.remove(index);
@@ -177,14 +194,14 @@ public class GamePanel extends JPanel{
 					makeObstacle((MAX_OBSTACLES * SPACER) );
 				}
 			}
-			
+
 			if(obj instanceof Pipe){ //removing instance of pipe
 				if(obj.x < 0){
 					sprites.remove(index);
 					index--;
 				}
 			}
-			
+
 			if(obj instanceof Ground){
 				if(obj.x < -gameDim.getWidth()){
 					obj.x = (int) (gameDim.getWidth());
@@ -200,6 +217,20 @@ public class GamePanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!initialClick){ initialClick = true; }
+				if(releasedSpace){
+					releasedSpace = false;
+					flappy.jump();
+				}
+			}
+
+		});
+		getInputMap().put(KeyStroke.getKeyStroke("released SPACE"), "rjump");
+		getActionMap().put("rjump", new AbstractAction(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				releasedSpace = true;
+
 			}
 
 		});
