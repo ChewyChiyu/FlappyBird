@@ -152,6 +152,8 @@ public class GamePanel extends JPanel{
 			if(flappy.dy < MAX_GRAVITY){
 				flappy.dy += GRAVITY;
 			}
+			//changing bird angle
+			flappy.angle += (flappy.angle < Math.PI/2 ) ? (Math.PI / 60) : 0;
 			//moving bird
 			flappy.y += flappy.dy;
 		}
@@ -184,7 +186,7 @@ public class GamePanel extends JPanel{
 				continue;
 			}
 			if(!(obj instanceof Bird)){ //move everything except bird
-				obj.x-=1;
+				obj.x-=3;
 			}
 
 			if(obj instanceof Goal){

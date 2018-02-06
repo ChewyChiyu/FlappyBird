@@ -22,9 +22,7 @@ public abstract class GameObject {
 		hitBox = new Rectangle(x,y,w,h);
 	}
 	
-	
-	public
-	
+		
 	
 	//checking for a contact between the hitboxes of two gameObjects
 	void checkForContact(ArrayList<GameObject> obj){
@@ -40,10 +38,7 @@ public abstract class GameObject {
 	}
 	
 	
-	void updateHitbox(){
-
-		hitBox.setBounds(x, y, w, h);
-	}
+	abstract void updateHitbox();
 
 	abstract void contact(GameObject obj);
 	abstract void draw(Graphics g);

@@ -29,8 +29,14 @@ public class Pipe extends GameObject{
 		g2d.translate(x - w/2, y - h/2);
 		g2d.rotate( (isUpsideDown) ? Math.PI : 0);
 		g.drawImage(img, -w/2, -h/2, w, h, panel);
-		g.drawRect(-hitBox.width/2, -hitBox.height/2, hitBox.width, hitBox.height); //hitboxes
 		g2d.setTransform(old);
+		g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height); //hitboxes
+	}
+
+	@Override
+	void updateHitbox() {
+		// TODO Auto-generated method stub
+		hitBox.setBounds(x - w, y - h, w, h);
 	}
 	
 }

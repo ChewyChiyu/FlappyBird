@@ -23,4 +23,10 @@ public class Goal extends GameObject{
 		g.drawRect(x, y, w, h);
 	}
 
+	@Override
+	void updateHitbox() {
+		// TODO Auto-generated method stub
+		hitBox.setBounds(x, y, w, h);
+	}
+
 }
