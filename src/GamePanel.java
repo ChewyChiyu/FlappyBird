@@ -294,12 +294,12 @@ public class GamePanel extends JPanel{
 		//drawing score
 		//score to texture
 		String num = ""+score;
-		int xBuffer = gameDim.width/2 - (num.length() * Texture.numbers[0].getWidth());
-		int yBuffer = (int) (gameDim.getHeight() / 7);
-		final int SPACER = Texture.numbers[0].getWidth() * Texture.NUM_SCALE;
+		final int SPACER = (int) (Texture.numbers[0].getWidth() * Texture.NUM_SCALE); // some pixel spacers
+		int xBuffer = (gameDim.width/2 - ((num.length()  * SPACER)/2));
+		int yBuffer = (int) (gameDim.getHeight() / 10);
 		for(int index = 0; index < num.length(); index++){
 			BufferedImage b = Texture.numbers[Integer.parseInt(num.substring(index, index+1))];
-			g.drawImage(b, xBuffer, yBuffer, b.getWidth() * Texture.NUM_SCALE, b.getHeight() * Texture.NUM_SCALE, this);
+			g.drawImage(b, xBuffer, yBuffer, (int)(b.getWidth() * Texture.NUM_SCALE),(int)( b.getHeight() * Texture.NUM_SCALE), this);
 			xBuffer+=SPACER;
 		}
 	}

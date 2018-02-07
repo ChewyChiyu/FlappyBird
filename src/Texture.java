@@ -13,7 +13,7 @@ public class Texture {
 	public static int BACKGROUND_SCALE = 2;
 	public static double PIPE_SCALE = 0.75;
 	public static double BIRD_SCALE = 5;
-	public static int NUM_SCALE = 3;
+	public static double NUM_SCALE = 3.5;
 	public Texture(){
 		load();
 	}
