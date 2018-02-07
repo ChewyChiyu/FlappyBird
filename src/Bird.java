@@ -97,13 +97,13 @@ public class Bird extends GameObject{
 		g2d.rotate(angle);
 		g2d.drawImage(Texture.bird[actionIndex], -w/2, -h/2, w, h, panel);
 		g2d.setTransform(old);
-	//	g2d.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height); //hitboxes
+		//g2d.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height); //hitboxes
 	}
 
 	@Override
 	void updateHitbox() {
 		// TODO Auto-generated method stub
-		hitBox.setBounds(x-w, y-h, w, h);
+		hitBox.setBounds((int)(x-w+(w*0.2)),(int)(y-h+(h*0.2)), (int)(w-(w*0.2)), (int)(h-(h*0.2))); //taking alittle edge off the hitbox
 	}
 
 }

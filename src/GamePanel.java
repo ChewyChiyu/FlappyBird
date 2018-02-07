@@ -165,6 +165,9 @@ public class GamePanel extends JPanel{
 			if(!flappy.inContact){ //if hit ground dont move
 			flappy.y += flappy.dy;
 			}
+			if(flappy.y < -SPACER/2){ //100 pixel buffer
+				flappy.isAlive = false; // auto dead
+			}
 		}
 	}
 
