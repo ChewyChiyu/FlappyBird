@@ -1,4 +1,6 @@
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -165,7 +167,7 @@ public class GamePanel extends JPanel{
 			flappy.angle += (flappy.angle < Math.PI/2 ) ? (Math.PI / 60) : 0;
 			//moving bird
 			if(!flappy.inContact){ //if hit ground dont move
-			flappy.y += flappy.dy;
+				flappy.y += flappy.dy;
 			}
 			if(flappy.y < -SPACER/2){ // pixel buffer
 				flappy.isAlive = false; // auto dead
@@ -265,12 +267,12 @@ public class GamePanel extends JPanel{
 
 
 	}
-	
+
 	void resetGame(){
 		//restarting vars
 		initialVars();
 	}
-	
+
 	void panel(){
 		JFrame frame = new JFrame("Flappy Bird");
 		frame.add(this);
@@ -284,15 +286,26 @@ public class GamePanel extends JPanel{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		//draw backGrounds
+		drawBG(g);
+		//drawing score
+		drawSprites(g);
+		//score to texture
+		drawScore(g);
+		//draw text
+		//drawText(g);
+	}
+	void drawBG(Graphics g){
 		g.drawImage(Texture.background, bg1X, 0, (Texture.background.getWidth() * Texture.BACKGROUND_SCALE) /2 ,Texture.background.getHeight() * Texture.BACKGROUND_SCALE, this);
 		g.drawImage(Texture.background, bg2X, 0, (Texture.background.getWidth() * Texture.BACKGROUND_SCALE) /2 ,Texture.background.getHeight() * Texture.BACKGROUND_SCALE, this);
+	}
+	void drawSprites(Graphics g){
 		//drawing sprites
 		for(int index = 0 ; index < sprites.size(); index++){
 			GameObject obj = sprites.get(index);
 			obj.draw(g);
 		}
-		//drawing score
-		//score to texture
+	}
+	void drawScore(Graphics g){
 		String num = ""+score;
 		final int SPACER = (int) (Texture.numbers[0].getWidth() * Texture.NUM_SCALE); // some pixel spacers
 		int xBuffer = (gameDim.width/2 - ((num.length()  * SPACER)/2));
@@ -301,6 +314,19 @@ public class GamePanel extends JPanel{
 			BufferedImage b = Texture.numbers[Integer.parseInt(num.substring(index, index+1))];
 			g.drawImage(b, xBuffer, yBuffer, (int)(b.getWidth() * Texture.NUM_SCALE),(int)( b.getHeight() * Texture.NUM_SCALE), this);
 			xBuffer+=SPACER;
+		}
+	}
+	void drawText(Graphics g){
+		//drawing text
+		g.setColor(Color.black);
+		g.setFont(new Font("Aerial",Font.BOLD,20));
+		//R to reset after defeat
+		if(!flappy.isAlive){
+			g.drawString("R To Reset", (int)(gameDim.getWidth()*.6), (int)(gameDim.getHeight()*.94));
+		}
+		if(!initialClick){
+			g.drawString("SPACE To Jump", (int)(gameDim.getWidth()*.6), (int)(gameDim.getHeight()*.94));
+
 		}
 	}
 }
