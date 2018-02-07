@@ -6,13 +6,30 @@ import java.awt.geom.AffineTransform;
 public class Bird extends GameObject{
 	
 	int dy = 0; // jump impulse factor
-	
+	int actionIndex = 0; //for animation
 	double angle = 0;
 	
 	boolean isJumping = false;
+	boolean isAlive = true;
 	
 	public Bird(int x, int y, GamePanel p) {
-		super(x, y, ZMask.BIRD.zPosition,(int) (Texture.bird.getWidth() * Texture.BIRD_SCALE), (int)(Texture.bird.getHeight() * Texture.BIRD_SCALE),p);
+		super(x, y, ZMask.BIRD.zPosition,(int) (Texture.bird[0].getWidth() * Texture.BIRD_SCALE), (int)(Texture.bird[0].getHeight() * Texture.BIRD_SCALE),p);
+		
+		//handle animation internally
+		Thread animate = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				while(isAlive){
+					if(actionIndex++ == 2){
+						actionIndex = 1;
+					}
+					try{ Thread.sleep(10); } catch(Exception e) { }
+				}
+			}
+			
+		});
+		animate.start();
 	}
 
 	void jump(){
@@ -59,11 +76,14 @@ public class Bird extends GameObject{
 			//trigger flag for goal
 			//score++
 			panel.score++;
-			System.out.println(panel.score);
 		}
 		//death zones
-		if(obj instanceof Pipe || obj instanceof Ground){
-			System.out.println("ded");
+		if(obj instanceof Pipe){
+			isAlive = false;
+		}
+		if(obj instanceof Ground){
+			isAlive = false;
+			inContact = true;
 		}
 	}
 
@@ -75,7 +95,7 @@ public class Bird extends GameObject{
 		AffineTransform old = g2d.getTransform();
 		g2d.translate(x - w/2, y - h/2);
 		g2d.rotate(angle);
-		g2d.drawImage(Texture.bird, -w/2, -h/2, w, h, panel);
+		g2d.drawImage(Texture.bird[actionIndex], -w/2, -h/2, w, h, panel);
 		g2d.setTransform(old);
 		g2d.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height); //hitboxes
 	}

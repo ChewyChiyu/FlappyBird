@@ -18,7 +18,7 @@ public class GamePanel extends JPanel{
 	ArrayList<GameObject> sprites = new ArrayList<GameObject>();
 
 	int score;
-	
+
 	int currentFPS;
 	int MAX_FPS = 60;
 
@@ -162,7 +162,9 @@ public class GamePanel extends JPanel{
 			//changing bird angle
 			flappy.angle += (flappy.angle < Math.PI/2 ) ? (Math.PI / 60) : 0;
 			//moving bird
+			if(!flappy.inContact){ //if hit ground dont move
 			flappy.y += flappy.dy;
+			}
 		}
 	}
 
@@ -176,8 +178,8 @@ public class GamePanel extends JPanel{
 		});
 	}
 
-	void manageBackground(){//if bg1X or bg2X is < Texture.background.getWidth() * Texture.BACKGROUND_SCALE / 2, += Texture.background.getWidth() * Texture.BACKGROUND_SCALE / 2
-
+	void manageBackground(){//if bg1X or bg2X is < Texture.background.getWidth() * Texture.BACKGROUND_SCALE / 2, += Texture.background.getWidth() * Texture.BACKGROUND_SCALE / 2	
+		if(!flappy.isAlive){ return; }
 		bg1X--;
 		bg2X--;
 		if(bg1X < -Texture.background.getWidth() * Texture.BACKGROUND_SCALE/2 ){
@@ -226,6 +228,7 @@ public class GamePanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!initialClick){ initialClick = true; }
+				if(!flappy.isAlive){ return; }
 				if(releasedSpace){
 					releasedSpace = false;
 					flappy.jump();

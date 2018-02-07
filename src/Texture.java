@@ -7,12 +7,12 @@ public class Texture {
 	public static BufferedImage pipe;
 	public static BufferedImage background;
 	public static BufferedImage ground;
-	public static BufferedImage bird;
+	public static BufferedImage[] bird = new BufferedImage[3];
 	public static BufferedImage[] numbers = new BufferedImage[10];
 	
 	public static int BACKGROUND_SCALE = 2;
 	public static double PIPE_SCALE = 0.75;
-	public static double BIRD_SCALE = 0.15;
+	public static double BIRD_SCALE = 5;
 	public static int NUM_SCALE = 3;
 	public Texture(){
 		load();
@@ -23,7 +23,8 @@ public class Texture {
 			pipe = ImageIO.read(getClass().getResource("Pipe.png"));			
 			background =  ImageIO.read(getClass().getResource("Background.png"));
 			ground =  ImageIO.read(getClass().getResource("Ground.png"));
-			bird =  ImageIO.read(getClass().getResource("Bird.png"));
+		
+
 			
 			//numbers
 			BufferedImage universalSheet = ImageIO.read(getClass().getResource("UniversalSheet.png"));
@@ -38,6 +39,10 @@ public class Texture {
 			numbers[8] = universalSheet.getSubimage(319,183,13,19);
 			numbers[9] = universalSheet.getSubimage(333,183,13,19);
 
+			//bird
+			bird[0] = universalSheet.getSubimage(2,490,18,13);
+			bird[1] = universalSheet.getSubimage(30,490,18,13);
+			bird[2] = universalSheet.getSubimage(58,490,18,13);
 			
 		}catch(Exception e) { e.printStackTrace();}
 	}
