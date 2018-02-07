@@ -13,12 +13,13 @@ public abstract class GameObject {
 	
 	
 	
-	public GameObject(int x, int y, int z, int w, int h){
+	public GameObject(int x, int y, int z, int w, int h, GamePanel p){
 		this.x  = x;
 		this.y = y;
 		this.z = z;
 		this.w = w;
 		this.h = h;
+		panel = p;
 		hitBox = new Rectangle(x,y,w,h);
 	}
 	
@@ -29,9 +30,8 @@ public abstract class GameObject {
 		if(inContact) { return; }
 		for(int index = 0; index < obj.size(); index++){
 			GameObject o = obj.get(index);
+			if(o.equals(this)){ continue; }
 			if(o.hitBox.intersects(hitBox)){
-				inContact = true;
-				o.inContact = true;
 				contact(o);
 			}
 		}

@@ -10,8 +10,8 @@ public class Pipe extends GameObject{
 	
 	final BufferedImage img;
 	
-	public Pipe(int x, int y, boolean isUpsideDown){
-		super(x,y,ZMask.PIPE.zPosition,(int)(Texture.pipe.getWidth() * Texture.PIPE_SCALE),(int)(Texture.pipe.getHeight()* Texture.PIPE_SCALE));
+	public Pipe(int x, int y, boolean isUpsideDown, GamePanel p){
+		super(x,y,ZMask.PIPE.zPosition,(int)(Texture.pipe.getWidth() * Texture.PIPE_SCALE),(int)(Texture.pipe.getHeight()* Texture.PIPE_SCALE), p);
 		this.isUpsideDown = isUpsideDown;
 		img = (isUpsideDown) ? Texture.pipe : Texture.pipe;
 	}

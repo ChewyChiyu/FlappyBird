@@ -11,8 +11,8 @@ public class Bird extends GameObject{
 	
 	boolean isJumping = false;
 	
-	public Bird(int x, int y) {
-		super(x, y, ZMask.BIRD.zPosition,(int) (Texture.bird.getWidth() * Texture.BIRD_SCALE), (int)(Texture.bird.getHeight() * Texture.BIRD_SCALE));
+	public Bird(int x, int y, GamePanel p) {
+		super(x, y, ZMask.BIRD.zPosition,(int) (Texture.bird.getWidth() * Texture.BIRD_SCALE), (int)(Texture.bird.getHeight() * Texture.BIRD_SCALE),p);
 	}
 
 	void jump(){
@@ -52,7 +52,19 @@ public class Bird extends GameObject{
 	@Override
 	void contact(GameObject obj) {
 		// TODO Auto-generated method stub
-		
+		if(obj.inContact){ return; } //guard
+		obj.inContact = true;
+		//score if contact with goal, death if anything else
+		if(obj instanceof Goal){
+			//trigger flag for goal
+			//score++
+			panel.score++;
+			System.out.println(panel.score);
+		}
+		//death zones
+		if(obj instanceof Pipe || obj instanceof Ground){
+			System.out.println("ded");
+		}
 	}
 
 	@Override

@@ -2,8 +2,8 @@ import java.awt.Graphics;
 
 public class Ground extends GameObject{
 
-	public Ground(int x, int y) {
-		super(x, y, ZMask.GROUND.zPosition, Texture.ground.getWidth() * Texture.BACKGROUND_SCALE, Texture.ground.getHeight() * Texture.BACKGROUND_SCALE);
+	public Ground(int x, int y, GamePanel p) {
+		super(x, y, ZMask.GROUND.zPosition, Texture.ground.getWidth() * Texture.BACKGROUND_SCALE, Texture.ground.getHeight() * Texture.BACKGROUND_SCALE, p);
 	}
 
 	@Override

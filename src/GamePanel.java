@@ -1,6 +1,7 @@
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,6 +17,8 @@ public class GamePanel extends JPanel{
 	Dimension gameDim;
 	ArrayList<GameObject> sprites = new ArrayList<GameObject>();
 
+	int score;
+	
 	int currentFPS;
 	int MAX_FPS = 60;
 
@@ -54,6 +57,8 @@ public class GamePanel extends JPanel{
 	void initialVars(){
 		//reseting intialClick
 		initialClick = false;
+		//reseting score
+		score = 0;
 		//reseting bg1 and bg2 values
 		bg1X = 0;
 		bg2X = (Texture.background.getWidth() * Texture.BACKGROUND_SCALE) / 2;
@@ -66,16 +71,16 @@ public class GamePanel extends JPanel{
 			xBuffer += SPACER;
 		}
 		//add ground
-		sprites.add(new Ground(0,(int)(gameDim.getHeight()*.85)));
-		sprites.add(new Ground(gameDim.width,(int)(gameDim.getHeight()*.85)));
+		sprites.add(new Ground(0,(int)(gameDim.getHeight()*.85),this));
+		sprites.add(new Ground(gameDim.width,(int)(gameDim.getHeight()*.85),this));
 		//add bird
-		flappy = new Bird((int)(gameDim.getWidth()/2),(int)(gameDim.getHeight()/2));
+		flappy = new Bird((int)(gameDim.getWidth()/2),(int)(gameDim.getHeight()/2),this);
 		sprites.add(flappy);
 	}
 
 	void makeObstacle(int xBuffer){
 		PipeStyle randStyle = PipeStyle.MIDDLE;
-		switch((int)(Math.random()*2)){
+		switch((int)(Math.random()*3)){
 		case 0:
 			randStyle = PipeStyle.BOTTOM;
 			break;
@@ -84,12 +89,12 @@ public class GamePanel extends JPanel{
 			break;
 		}
 
-		Pipe top = new Pipe(xBuffer, randStyle.yPosTop,true);
-		Pipe bottom = new Pipe(xBuffer, randStyle.yPosBottom,false);
+		Pipe top = new Pipe(xBuffer, randStyle.yPosTop,true,this);
+		Pipe bottom = new Pipe(xBuffer, randStyle.yPosBottom,false,this);
 		sprites.add(top);
 		sprites.add(bottom);
 		//adding goal to go with pair
-		sprites.add(new Goal(xBuffer - top.w + top.w/2,bottom.y - bottom.h -( bottom.y - (top.y + top.h)), Goal.WIDTH , bottom.y - (top.y + top.h) ));
+		sprites.add(new Goal(xBuffer - top.w + top.w/2,bottom.y - bottom.h -( bottom.y - (top.y + top.h)), Goal.WIDTH , bottom.y - (top.y + top.h) ,this));
 	}
 
 	void gameLoop(){ //standard gameLoop
@@ -144,6 +149,8 @@ public class GamePanel extends JPanel{
 			GameObject obj = sprites.get(index);
 			//updating hitboxes
 			obj.updateHitbox();
+			//checking collisions
+			obj.checkForContact(sprites);
 		}
 		//sort for ZMask
 		sortZMask();
@@ -186,7 +193,7 @@ public class GamePanel extends JPanel{
 				continue;
 			}
 			if(!(obj instanceof Bird)){ //move everything except bird
-				obj.x-=3;
+				obj.x-=4;
 			}
 
 			if(obj instanceof Goal){
@@ -259,6 +266,16 @@ public class GamePanel extends JPanel{
 			GameObject obj = sprites.get(index);
 			obj.draw(g);
 		}
+		//drawing score
+		//score to texture
+		String num = ""+score;
+		int xBuffer = gameDim.width/2 - (((num.length()+1)/2) * (Texture.numbers[0].getWidth() * Texture.NUM_SCALE));
+		int yBuffer = (int) (gameDim.getHeight() / 7);
+		final int SPACER = Texture.numbers[0].getWidth() * Texture.NUM_SCALE;
+		for(int index = 0; index < num.length(); index++){
+			BufferedImage b = Texture.numbers[Integer.parseInt(num.substring(index, index+1))];
+			g.drawImage(b, xBuffer, yBuffer, b.getWidth() * Texture.NUM_SCALE, b.getHeight() * Texture.NUM_SCALE, this);
+			xBuffer+=SPACER;
+		}
 	}
-
 }
