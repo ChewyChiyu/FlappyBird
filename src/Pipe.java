@@ -30,7 +30,7 @@ public class Pipe extends GameObject{
 		g2d.rotate( (isUpsideDown) ? Math.PI : 0);
 		g.drawImage(img, -w/2, -h/2, w, h, panel);
 		g2d.setTransform(old);
-		g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height); //hitboxes
+		//g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height); //hitboxes
 	}
 
 	@Override

@@ -35,7 +35,7 @@ public class Bird extends GameObject{
 	void jump(){
 		if(!isJumping){ //jump only once
 			dy = 0;
-			final int JUMP_INDEX = 9;
+			final int JUMP_INDEX = 10;
 			final int JUMP_IMPULSE = 3;
 			final int ANGLE_SHIFT_INDEX = 30;
 			isJumping = true;
@@ -55,7 +55,7 @@ public class Bird extends GameObject{
 				@Override
 				public void run() {
 					for(int index = 0; index < ANGLE_SHIFT_INDEX; index++){
-						angle -= (angle > -Math.PI/3) ? Math.PI/60 : 0;
+						angle -= (angle > -Math.PI/3) ? Math.PI/50 : 0;
 						try{ Thread.sleep(2); } catch(Exception e) { }
 					}
 				}
@@ -97,7 +97,7 @@ public class Bird extends GameObject{
 		g2d.rotate(angle);
 		g2d.drawImage(Texture.bird[actionIndex], -w/2, -h/2, w, h, panel);
 		g2d.setTransform(old);
-		g2d.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height); //hitboxes
+	//	g2d.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height); //hitboxes
 	}
 
 	@Override

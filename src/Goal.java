@@ -19,7 +19,7 @@ public class Goal extends GameObject{
 	void draw(Graphics g) {
 		// TODO Auto-generated method stub
 		g.setColor(Color.RED);
-		g.drawRect(x, y, w, h);
+		//g.drawRect(x, y, w, h);
 	}
 
 	@Override
