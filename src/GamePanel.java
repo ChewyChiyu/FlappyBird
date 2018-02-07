@@ -294,7 +294,7 @@ public class GamePanel extends JPanel{
 		//drawing score
 		//score to texture
 		String num = ""+score;
-		int xBuffer = gameDim.width/2 - (((num.length()+1)/2) * (Texture.numbers[0].getWidth() * Texture.NUM_SCALE)/2);
+		int xBuffer = gameDim.width/2 - (num.length() * Texture.numbers[0].getWidth());
 		int yBuffer = (int) (gameDim.getHeight() / 7);
 		final int SPACER = Texture.numbers[0].getWidth() * Texture.NUM_SCALE;
 		for(int index = 0; index < num.length(); index++){
