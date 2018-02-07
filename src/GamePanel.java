@@ -165,7 +165,7 @@ public class GamePanel extends JPanel{
 			if(!flappy.inContact){ //if hit ground dont move
 			flappy.y += flappy.dy;
 			}
-			if(flappy.y < -SPACER/2){ //100 pixel buffer
+			if(flappy.y < -SPACER/2){ // pixel buffer
 				flappy.isAlive = false; // auto dead
 			}
 		}
@@ -275,7 +275,7 @@ public class GamePanel extends JPanel{
 		//drawing score
 		//score to texture
 		String num = ""+score;
-		int xBuffer = gameDim.width/2 - (((num.length()+1)/2) * (Texture.numbers[0].getWidth() * Texture.NUM_SCALE));
+		int xBuffer = gameDim.width/2 - (((num.length()+1)/2) * (Texture.numbers[0].getWidth() * Texture.NUM_SCALE)/2);
 		int yBuffer = (int) (gameDim.getHeight() / 7);
 		final int SPACER = Texture.numbers[0].getWidth() * Texture.NUM_SCALE;
 		for(int index = 0; index < num.length(); index++){
