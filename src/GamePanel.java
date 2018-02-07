@@ -15,7 +15,7 @@ import javax.swing.KeyStroke;
 public class GamePanel extends JPanel{
 
 	Dimension gameDim;
-	ArrayList<GameObject> sprites = new ArrayList<GameObject>();
+	ArrayList<GameObject> sprites;
 
 	int score;
 
@@ -59,6 +59,8 @@ public class GamePanel extends JPanel{
 		initialClick = false;
 		//reseting score
 		score = 0;
+		//reseting sprites
+		sprites = new ArrayList<GameObject>();
 		//reseting bg1 and bg2 values
 		bg1X = 0;
 		bg2X = (Texture.background.getWidth() * Texture.BACKGROUND_SCALE) / 2;
@@ -226,6 +228,8 @@ public class GamePanel extends JPanel{
 	}
 	void keys(){
 		getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "jump");
+		getInputMap().put(KeyStroke.getKeyStroke("R"), "r");
+
 		getActionMap().put("jump", new AbstractAction(){
 
 			@Override
@@ -236,6 +240,15 @@ public class GamePanel extends JPanel{
 					releasedSpace = false;
 					flappy.jump();
 				}
+			}
+
+		});
+		getActionMap().put("r", new AbstractAction(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//this is the temp reset feature
+				resetGame();
 			}
 
 		});
@@ -252,6 +265,12 @@ public class GamePanel extends JPanel{
 
 
 	}
+	
+	void resetGame(){
+		//restarting vars
+		initialVars();
+	}
+	
 	void panel(){
 		JFrame frame = new JFrame("Flappy Bird");
 		frame.add(this);
