@@ -5,8 +5,11 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+import java.util.ListIterator;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
@@ -157,7 +160,7 @@ public class GamePanel extends JPanel{
 			obj.checkForContact(sprites);
 		}
 		//sort for ZMask
-		sortZMask();
+		try{sortZMask(); } catch(Exception e) {  }//Concurrent Modification Error, some Java 8 stuff 
 		if(initialClick){ //only gravity if firstClick
 			//gravity and angle change for bird
 			if(flappy.dy < MAX_GRAVITY){
@@ -176,13 +179,13 @@ public class GamePanel extends JPanel{
 	}
 
 	void sortZMask(){
-		Collections.sort(sprites, new Comparator<GameObject>() {
-			@Override
-			public int compare(GameObject lhs, GameObject rhs) {
-				// -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
-				return lhs.z < rhs.z ? -1 : (lhs.z > rhs.z) ? 0 : 1;
-			}
-		});
+			Collections.sort(sprites, new Comparator<GameObject>() {
+				@Override
+				public int compare(GameObject lhs, GameObject rhs) {
+					// -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+					return lhs.z < rhs.z ? -1 : (lhs.z > rhs.z) ? 0 : 1;
+				}
+			});
 	}
 
 	void manageBackground(){//if bg1X or bg2X is < Texture.background.getWidth() * Texture.BACKGROUND_SCALE / 2, += Texture.background.getWidth() * Texture.BACKGROUND_SCALE / 2	

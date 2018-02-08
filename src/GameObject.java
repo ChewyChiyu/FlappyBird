@@ -10,9 +10,7 @@ public abstract class GameObject {
 	GamePanel panel;
 	
 	boolean inContact = false;
-	
-	
-	
+		
 	public GameObject(int x, int y, int z, int w, int h, GamePanel p){
 		this.x  = x;
 		this.y = y;
